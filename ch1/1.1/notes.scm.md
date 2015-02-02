@@ -40,9 +40,9 @@ Every language has 3 basic mechanisms:
       ```scheme
       (define pi 3.14159)
       (define radius 10)
-      (* pi (* radius radius)) --> 314.159
+      (* pi (* radius radius)) ;--> 314.159
       (define circumference (* 2 pi radius))
-      circumference --> 62.8318
+      circumference ;--> 62.8318
 
       ```
 * _environment_ = memory that keeps track of name-object pairs (technically the _globabl environment_)
@@ -67,13 +67,13 @@ Every language has 3 basic mechanisms:
     * `(define (<name> <formal parameters>) <body>)`
     ```scheme
     (define (square x) (* x x))
-    (square 3) --> 9
+    (square 3) ;--> 9
 
     ```
 
 ## 1.1.5 The Substitution Model for Procedure Application
 * _substitution model_ = To apply compound procedure to arguments, evaluate body of procedure with each formal parameter replaced by the corresponding argument
-  * note that this is a basic model, somewhat naive model
+  * note that this is a basic, somewhat naive model
   * when calling (square 3), the interpreter grabs the body, (\* x x), then substitutes the argument _3_ for the formal parameter _x_ in the body, leading to (\* 3 3), which can then be evaluated to _9_
   * given:
     ```scheme
@@ -124,7 +124,7 @@ Every language has 3 basic mechanisms:
 
   ```
   * Each pair of expressions `(<p> <e>)` is called a _clause_, with the first term known as the _predicate_, and the second term known as the _consequent expression_.
-  * Each clause is evaluated one at a time until a true predicate is found, at which point the value of the expression is returned.
+  * Each clause is evaluated _one at a time_ until a true predicate is found, at which point the value of the expression is returned.
   * If no predicates are true, the return value is _undefined_
   * The final clause can be an _else_ statement 
     * `(else <expression>)`
@@ -150,10 +150,10 @@ Every language has 3 basic mechanisms:
     ```
 * Logical operations:
   * `(and <e_1> ... <e_N>)`
-    * Evaluate expressions one at a time, left to right.  If any expression is false, then stop evaluating and return false.  Otherwise, all expressions are true **and return the value of the last one**.
+    * Evaluate expressions one at a time, left to right.  If any expression is false, then stop evaluating and return false.  Otherwise, _all expressions are true_ **and return the value of the last one**.
     * This is another example of a _special form_, because the subexpressions will not necessarily be evaluated each time 
   * `(or <e_1> ... <e_N>)`
-    * Evaluate expressions one at a time, left to right.  If any expression is true, then stop evaluating and return the value of that expression.  Otherwise, all expressions are false and return false.
+    * Evaluate expressions one at a time, left to right.  _If any expression is true_, then stop evaluating and **return the value of that expression**.  Otherwise, all expressions are false and return false.
     * This is another example of a _special form_
   * `(not <e>)`
     * Return true if expression is false, and false if expression is true.
@@ -259,4 +259,3 @@ Every language has 3 basic mechanisms:
       (sqrt-iter 1.0))
 
     ```
-
