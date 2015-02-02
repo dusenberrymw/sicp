@@ -37,14 +37,14 @@ Every language has 3 basic mechanisms:
       * ` size` --> 2
       * note that this will look to see if there is a name-value pair that uses the `'size` symbol as the name
     * can also use simple names to refer to results of compound operations, such as `circumference` in the following:
-      * 
-        ```
-        (define pi 3.14159)
-        (define radius 10)
-        (* pi (* radius radius)) --> 314.159
-        (define circumference (* 2 pi radius))
-        circumference --> 62.8318
-        ```
+      ```scheme
+      (define pi 3.14159)
+      (define radius 10)
+      (* pi (* radius radius)) --> 314.159
+      (define circumference (* 2 pi radius))
+      circumference --> 62.8318
+
+      ```
 * _environment_ = memory that keeps track of name-object pairs (technically the _globabl environment_)
 
 ## 1.1.3 Evaluation Combinations
@@ -65,9 +65,10 @@ Every language has 3 basic mechanisms:
 * _procedure definition_ = compound operation (_compound procedure_) can be given a name, and then be referred to as a unit 
   * In Scheme, define procedures with:
     * `(define (<name> <formal parameters>) <body>)`
-    ```
+    ```scheme
     (define (square x) (* x x))
     (square 3) --> 9
+
     ```
 
 ## 1.1.5 The Substitution Model for Procedure Application
@@ -75,12 +76,13 @@ Every language has 3 basic mechanisms:
   * note that this is a basic model, somewhat naive model
   * when calling (square 3), the interpreter grabs the body, (\* x x), then substitutes the argument _3_ for the formal parameter _x_ in the body, leading to (\* 3 3), which can then be evaluated to _9_
   * given:
-    ```
+    ```scheme
     (define (sum-of-squares x y)
       (+ (square x) (square y)))
     
     (define (f a)
       (sum-of-squares (+ a 1) (* a 2)))
+
     ```
   * evaluate (f 5):
     * `(f 5)`
@@ -112,13 +114,14 @@ Every language has 3 basic mechanisms:
 
 ## 1.1.6 Conditional Expressions & Predicates
 * _conditional_ in Scheme:
-  ```
+  ```scheme
   (cond (<predicate_1> <expression_1>)
         (<predicate_2> <expression_2>)
         .
         .
         .
         (<predicate_N> <expression_N>)) 
+
   ```
   * Each pair of expressions `(<p> <e>)` is called a _clause_, with the first term known as the _predicate_, and the second term known as the _consequent expression_.
   * Each clause is evaluated one at a time until a true predicate is found, at which point the value of the expression is returned.
@@ -126,22 +129,24 @@ Every language has 3 basic mechanisms:
   * The final clause can be an _else_ statement 
     * `(else <expression>)`
   * Example:
-    ```
+    ```scheme
     (define (abs x)
       (cond ((> x 0) x)
             ((= x 0) 0)
             ((< x 0) (- x))))
+
     ```
 * Can also express a conditional in an _if_ form:
   * `(if <predicate> <consequent> <alternative>)`
   * _If_ the predicate evaluates to true, _then_ the &lt;consequent&gt; will be evaluated and returned.  
   * _Otherwise_, the &lt;alternative&gt; will be evaluated and returned.
   * Example:
-    ```
+    ```scheme
     (define (abs x)
       (if (< x 0)
           (- x)
           x))
+
     ```
 * Logical operations:
   * `(and <e_1> ... <e_N>)`
@@ -161,7 +166,7 @@ Every language has 3 basic mechanisms:
   * we want to compute the square root of _x_
   * if we have a guess _y_, we can get a better guess by averaging _y_ with _x_/_y_
   * the following is a possible implementation:
-    ```
+    ```scheme
     (define (sqrt x)
       (sqrt-iter 1.0 x))
 
@@ -179,6 +184,7 @@ Every language has 3 basic mechanisms:
 
     (define (average x y)
       (/ (+ x y) 2))
+
     ```
   * then ` (sqrt 9)` --> 3.00009155413138
 
@@ -186,66 +192,71 @@ Every language has 3 basic mechanisms:
 * _procedural abstraction_ = the idea that the implementation of a procedure can be hidden, or _abstracted_ away, and thus can act like a black box
   * this means that a procedure could have several different implementations, but so long as they all compute the same result, they can be used interchangeably
   * ex: for the ` square` procedure, there could be different implementations, but it doesn't matter so long as they all compute the square of a number
-    * ```
-      (define (square x) (* x x))
+    ```scheme
+    (define (square x) (* x x))
 
-      (define (square x) 
-        (exp (double (log x))))
+    (define (square x) 
+      (exp (double (log x))))
 
-      (define (double x) (+ x x))
-      ```
+    (define (double x) (+ x x))
+
+    ```
 * _local names_
   * formal parameter names are local to the associated procedure, and are called _bound variables_
     * this means that the procedure definition _binds_ its formal parameter names
   * if the variable is _not_ bound, then it is _free_
   * the set of expressions for which a binding defines a name is called the _scope_ of the name
   * in the following example, `guess` and `x` are _bound_ variables, and `<`, `abs`, and `square` are _free_
-    * ```
-      (define (good-enough? guess x)
-        (< (abs (- (square guess) x)) 0.001))
-      ```
+    ```scheme
+    (define (good-enough? guess x)
+      (< (abs (- (square guess) x)) 0.001))
+
+    ```
 * _block structure_ = localize subprocedures for a given procedure by nesting them within the procedure itself as internal definitions
   * one goal here is to avoid naming conflicts between two procedures that may rely on subprocedures with the same (common) name, but with different intended results
     * ex: many numerical libraries may use functions like `good-enough?`, but may have different uses that don't produce the same results
       * in this case, the `good-enough?` for `sqrt` really is specific to `sqrt` itself, rather than being general purpose, so it would be best to nest it within `sqrt`
   * also allows us to break up a big program into smaller, tractable pieces that operate as units
   * ex: we can convert the `sqrt` procedure to use a block structure as follows:
-    * ```
-      (define (sqrt x)
-        (define (good-enough? guess x)
-          (< (abs (- (square guess) x)) 0.001))
+    ```scheme
+    (define (sqrt x)
+      (define (good-enough? guess x)
+        (< (abs (- (square guess) x)) 0.001))
 
-        (define (average x y)
-          (/ (+ x y) 2))
+      (define (average x y)
+        (/ (+ x y) 2))
 
-        (define (improve guess x)
-          (average guess (/ x guess)))
+      (define (improve guess x)
+        (average guess (/ x guess)))
 
-        (define (sqrt-iter guess x)
-          (if (good-enough? guess x)
-            guess
-            (sqrt-iter (improve guess x)
-                       x)))
+      (define (sqrt-iter guess x)
+        (if (good-enough? guess x)
+          guess
+          (sqrt-iter (improve guess x)
+                     x)))
 
-        (sqrt-iter 1.0 x))
-      ```
+      (sqrt-iter 1.0 x))
+
+    ```
 * _lexical scoping_ = free variables in a procedure refer to bindings made by enclosing procedure definitions. ie they are looked up in the environment in which the procedure is defind
   * ex: for the above `sqrt` example, since the `x` variable is bound to `sqrt`, the internal procedures are within the scope of `x`, so no need to explicitly pass it to those procedures
-    * ```
-      (define (sqrt x)
-        (define (good-enough? guess)
-          (< (abs (- (square guess) x)) 0.001))
+    ```scheme
+    (define (sqrt x)
+      (define (good-enough? guess)
+        (< (abs (- (square guess) x)) 0.001))
 
-        (define (average x y) ; this one is okay though, since this x isn't supposed to be the same
-          (/ (+ x y) 2))
+      (define (average x y) ; this one is okay though, since this x isn't supposed to be the same
+        (/ (+ x y) 2))
 
-        (define (improve guess)
-          (average guess (/ x guess)))
+      (define (improve guess)
+        (average guess (/ x guess)))
 
-        (define (sqrt-iter guess)
-          (if (good-enough? guess)
-            guess
-            (sqrt-iter (improve guess))))
+      (define (sqrt-iter guess)
+        (if (good-enough? guess)
+          guess
+          (sqrt-iter (improve guess))))
 
-        (sqrt-iter 1.0))
-      ```
+      (sqrt-iter 1.0))
+
+    ```
+
