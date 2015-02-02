@@ -13,6 +13,7 @@ Section 1.2 Procedures and the Processes They Generate
       (if (= n 1)
           1
           (* n (factorial (- n 1)))))
+
     ```
   * Ex2: 
     ```scheme
@@ -23,6 +24,7 @@ Section 1.2 Procedures and the Processes They Generate
             (iter (* counter product)
                   (+ counter 1))))
       (iter 1  1))
+
     ```
 * _Recursive process_ = One type of _process_ behavior that a _recursive procedure_ can generate.
   * The recursive reference causes an _expansion_ as the process builds up a chain of _deferred operations_, and then a _contraction_ as the expansions are actually performed.
@@ -79,6 +81,7 @@ Section 1.2 Procedures and the Processes They Generate
             ((= n 1) 1)
             (else (+ (fib (- n 1))
                      (fib (- n 2))))))
+
     ```
   * Ex: compare to the following Fibonacci _iterative_ algorithm:
     ```scheme
@@ -88,6 +91,7 @@ Section 1.2 Procedures and the Processes They Generate
             b
             (iter (+ a b) a (- count 1))))
       (iter 1 0 n))
+
     ```
     * In this case, we are setting `b := a`, and `a := a + b` for `n` steps, then returning `b`.
     * This rewrite of the first Fibonacci algorithm is _iterative_, and thus only has a number of steps that grows _linearly_ with `n`.
@@ -147,6 +151,7 @@ Section 1.2 Procedures and the Processes They Generate
     (if (= n 0)
         1
         (* b (expt b (- n 1)))))
+
   ```
   * This is a linear recursive process, with _theta(n)_ steps and _theta(n)_ space.
 * Alternatively, we could compute it as:
@@ -157,6 +162,7 @@ Section 1.2 Procedures and the Processes They Generate
         product
         (iter (- counter 1) (* b product))))
     (iter n 1))
+
   ```
   * This is a linear iterative process, with _theta(n)_ steps and _theta(1)_ space.
 * We could also reformulate the problem as the exponent of `b^n = b^(n/2) * b^(n/2)`, which would mean that we could reduce the number of steps significantly.
@@ -171,6 +177,7 @@ Section 1.2 Procedures and the Processes They Generate
 
   (define (square n)
     (* n n))
+
   ```
   * This is a _logarithmic_ process in both space and steps, and thus is _theta(log n)_ for both.  Note that `b^2n` only takes one more multiplication step than `b^n`, thus this procedure will scale easier.
 
@@ -180,8 +187,10 @@ Section 1.2 Procedures and the Processes They Generate
   ```scheme
   (define (gcd a b)
     (if (= b 0)
+      
         a
         (gcd b (remainder a b))))
+
   ```
   * This generates an iterative process that grows logarithmically in the number of steps.
 * **Lame's Theorem**: If Euclid's Algorithm requires _k_ steps to compute the GCD of some pair, then the smaller number of the pair must be greater than or equal to the _k_th Fibonacci number.
@@ -204,6 +213,7 @@ Section 1.2 Procedures and the Processes They Generate
 
   (define (divides? a b)
     (= (remainder b a) 0))
+
   ```
   * In this algorithm, if _n_ is _not_ prime, then its smallest divisor must be <= sqrt(n).  Thus, the order of growth of the number of steps is _theta(sqrt(n))_.
 * There is a _theta(log n)_ primality test based on Fermat's Little Theorem from number theory:
@@ -227,6 +237,7 @@ Section 1.2 Procedures and the Processes They Generate
             ((even? exp)
              (remainder (square (expmod base (/ exp 2) m)) m))
             (else (remainder (* base (expmod base (- exp 1) m)) m))))
+
     ``` 
   * Note that this algorithm is different than most because it is _not_ guaranteed to be correct.
     * If _n_ ever fails the Fermat test, then we are certain that _n_ is _not_ prime.  However, if _n_ passes the test, while this is a very strong indication, it does not guarantee that _n_ is prime.
