@@ -23,7 +23,7 @@
   (* x x))
 
 ;;; Now test
-;;; Numbers to test: 561, 1105, 1729, 2465, 2821, 6601
+;;; Carmichael numbers to test: 561, 1105, 1729, 2465, 2821, 6601
 (is-prime? 7)    ; true (should be true)
 (is-prime? 36)   ; false (should be false)
 (is-prime? 561)  ; true (should be false)

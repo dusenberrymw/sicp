@@ -1,4 +1,4 @@
-;;;; Ex. 1.26
+;;;; Ex 1.26
 
 ;;; In this exercise, we are given an alternative version of `expmod` that
 ;;;   uses explicit mulitplication rather than calling `square`.  Apparently
