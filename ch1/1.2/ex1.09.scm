@@ -45,5 +45,3 @@
 ;;; so, definition 2 generates an interative process, even though it is
 ;;;   a recursive procedure
 
-
-

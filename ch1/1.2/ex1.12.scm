@@ -12,4 +12,3 @@
         (else (+ (pascals-triangle (- row 1) (- col 1))
                  (pascals-triangle (- row 1) col))))) 
 
-

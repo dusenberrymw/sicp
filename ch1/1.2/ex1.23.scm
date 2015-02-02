@@ -80,4 +80,3 @@
 ;;;   iteration.  Therefore, the number of steps are not exactly cut in half,
 ;;;   and thus our timings are not decreased by a factor of 2.
 
-

@@ -80,4 +80,3 @@
 ;;; Therefore, for an input `a`, the order of growth in space used is:
 ;;;     R_space((sine a)) = theta(log a)
 
-
